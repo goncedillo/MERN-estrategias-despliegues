@@ -1,0 +1,21 @@
+# Plantilla para crear servicio systemd
+# Todo lo que está escrito entre () ha de sustituirse por los valores necesarios, quitando los ().
+# Eliminar comentarios
+
+[Unit]
+Description=(NOMBRE_DEL_SERVICIO)
+After=network.target
+
+[Service]
+# Solo si hacen falta variables
+EnvironmentFile=(/etc/systemd/system/NOMBRE_DEL_SERVICIO.env)
+Type=simple
+User=USUARIO_DEL_SISTEMA
+WorkingDirectory=(/home/USER_DEL_SISTEMA/carpeta_del_proyecto)
+# Ejecutamos nuestro archivo con Node 
+ExecStart=(/usr/bin/node /home/USER_DEL_SISTEMA/archivo.js)
+# Política de reincio en este caso basado en fallos
+Restart=on-failure
+
+[Install]
+WantedBy=multi.user.target

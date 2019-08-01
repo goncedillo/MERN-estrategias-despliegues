@@ -1,0 +1,37 @@
+# Plantilla de servidor Nginx
+# Todo lo que está escrito entre () ha de sustituirse por los valores necesarios, quitando los ().
+# Eliminar comentarios
+
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+
+	# /home/USER_SISTEMA/mi_propyecto/dist
+	root (RUTA_ABOLUTA_ARCHIVOS);
+
+	index index.html index.htm index.nginx-debian.html;
+
+	server_name (NOMBRE_DEL_SERVER_COMO_DOMINIO);
+
+	location / {
+		try_files $uri $uri/ =404;
+	}
+}
+
+server {
+	listen 80;
+	listen [::]:80;
+
+	server_name (NOMBRE_DEL_SERVER_COMO_DOMINIO_PARA_BACK);
+
+	location / {
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header Host $host;
+		proxy_http_version 1.1;
+		proxy_pass http://serverStream;
+	}
+}
+
+upstream serverStream {
+	server (IP_ELEGIDA):(PUERTO);
+}
